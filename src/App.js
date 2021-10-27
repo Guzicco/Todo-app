@@ -1,23 +1,25 @@
-import logo from './logo.svg';
+import React, {useState, useEffect} from 'react';
 import './App.css';
+import Task from './Task';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="flex-container" id="todo-wrapper">
+          <h1 className="flex-item" id="todo-header">
+              Todo
+          </h1>
+          <div className="flex-item" id="todo-input">
+              <form>
+              <label><input type="text" placeholder="add your task"></input></label>
+              </form>
+          </div>
+          <div className="flex-item" id="todo-list">
+              <p>task1</p>
+              <p>task2</p>
+              <Task/>
+          </div>
+      </div>
     </div>
   );
 }
