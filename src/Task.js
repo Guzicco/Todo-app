@@ -1,9 +1,25 @@
-import React, {useState} from "react";
+import React from "react";
 
-const Task = (props) =>{
-    return(
-        <p>task 3</p>
-    )
-}
+const Task = ({ id, taskInfo, onToggle, isDone, onRemove }) => {
+	return (
+		<li key={id}>
+			{taskInfo}{" "}
+			<input
+				type="checkbox"
+				onChange={() => {
+					onToggle(id);
+				}}
+				checked={isDone}
+			/>
+			<button
+				onClick={() => {
+					onRemove(id);
+				}}
+			>
+				Usuń mnie
+			</button>
+		</li>
+	);
+};
 
 export default Task;
