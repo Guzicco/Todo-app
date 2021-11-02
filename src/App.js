@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import Task from "./Task";
-const initialToDo = { id: 0, taskInfo: "task", isDone: false };
-const initialToDo1 = { id: 1, taskInfo: "task", isDone: true };
+const TODO_LIST_STORAGE_KEY = "TODO_LIST_STORAGE_KEY";
 
 function App() {
-	const [taskList, setTaskList] = useState([initialToDo, initialToDo1]);
+	const initialState =
+		JSON.parse(localStorage.getItem(TODO_LIST_STORAGE_KEY)) || [];
+	const [taskList, setTaskList] = useState(initialState);
 	const [toDoInput, setToDoInput] = useState("");
 
 	const handleToggle = (id) => {
@@ -40,6 +41,10 @@ function App() {
 		});
 		setTaskList(updatedToDoList);
 	};
+
+	useEffect(() => {
+		localStorage.setItem(TODO_LIST_STORAGE_KEY, JSON.stringify(taskList));
+	}, [taskList]);
 
 	const unfinishedToDo = taskList.filter((item) => !item.isDone);
 	const finishedToDo = taskList.filter((item) => item.isDone);
