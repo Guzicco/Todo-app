@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import Task from "./Task";
+
 const TODO_LIST_STORAGE_KEY = "TODO_LIST_STORAGE_KEY";
 
 function App() {
 	const initialState =
 		JSON.parse(localStorage.getItem(TODO_LIST_STORAGE_KEY)) || [];
+
 	const [taskList, setTaskList] = useState(initialState);
 	const [toDoInput, setToDoInput] = useState("");
 
@@ -23,7 +25,6 @@ function App() {
 		event.preventDefault();
 		const taskname = event.target.taskInput.value;
 		if (!taskname) {
-			console.error("puściutko");
 			return;
 		}
 		const newItem = {
@@ -52,8 +53,8 @@ function App() {
 	return (
 		<div className="App">
 			<div className="flex-container">
-				<h1 className="flex-item">Todo</h1>
 				<div className="flex-item">
+					<h1>Todo</h1>
 					<form onSubmit={handleSubmit}>
 						<label>
 							<input
@@ -85,7 +86,7 @@ function App() {
 							))}
 						</ol>
 					) : (
-						<p> Brak Tasków</p>
+						<p> No Tasks</p>
 					)}
 					<h1>Finished</h1>
 					{finishedToDo.length ? (
@@ -104,7 +105,7 @@ function App() {
 							})}
 						</ol>
 					) : (
-						<p>Brak Tasków</p>
+						<p>No Tasks</p>
 					)}
 				</div>
 			</div>

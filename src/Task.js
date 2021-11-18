@@ -16,7 +16,7 @@ const Task = ({ id, taskInfo, onToggle, isDone, onRemove }) => {
 					onRemove(id);
 				}}
 			>
-				Usuń mnie
+				Delete
 			</button>
 		</li>
 	);
