@@ -6,6 +6,14 @@ body {
 		sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	background: fixed rgba(120, 222, 120, 0.6);
+	background: fixed
+		linear-gradient(
+			155deg,
+			rgba(120, 222, 120, 0.6) 0%,
+			rgba(222, 120, 120, 0.6) 70%
+		);
+	background: fixed radial-gradient();
 }
 
 code {

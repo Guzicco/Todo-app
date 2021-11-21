@@ -1,14 +1,85 @@
 .App {
-  text-align: center;
+	text-align: center;
+	margin-top: 20px;
 }
 
-flex-container {
-  display: flex;
-  align-items: center;
+.flex-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
 }
 
-flex-item{
-  justify-content: center;
-  border: 2px, black, solid;
+.flex-item {
+	max-width: 800px;
+	min-width: 600px;
+	margin: 5px;
+	padding: 10px;
+	border: 1px solid black;
+	border-radius: 40px;
+	background-color: rgba(96, 123, 255, 0.6);
+	box-shadow: 1px 2px;
 }
 
+#todo-header > form input {
+	padding: 5px;
+	padding-left: 15px;
+	margin: 0px 5px 0px 5px;
+	width: 30%;
+	min-width: 200px;
+	font-size: medium;
+	background-color: whitesmoke;
+	border: 2px solid black;
+	border-radius: 20px;
+	transition: all ease 0.5s;
+}
+
+#todo-header > form input:focus {
+	outline: none;
+	width: 60%;
+}
+#todo-header > form input:focus::placeholder {
+	font-size: 0;
+}
+
+#todo-header > form button {
+	padding: 5px;
+	width: 20%;
+	border-radius: 20px;
+	font-size: medium;
+	background-color: whitesmoke;
+}
+
+.list-viewer {
+	padding: 10px;
+}
+.list-viewer li {
+	display: grid;
+	grid-template-columns: auto 25px 100px;
+	grid-column-gap: 15px;
+	padding: 5px 30px 5px 10px;
+	margin-top: 10px;
+	text-align: left;
+	background-color: cornsilk;
+	border-radius: 5px;
+}
+
+.list-switcher > button {
+	width: 40%;
+	padding: 5px;
+	margin: 20px 5px 5px 5px;
+	opacity: 0.5;
+	font-size: large;
+}
+
+.list-switcher > button:first-child {
+	background-color: rgba(255, 0, 0, 0.3);
+}
+.list-switcher > button:nth-child(2) {
+	background-color: rgba(0, 255, 0, 0.3);
+}
+
+.list-switcher > .active-button {
+	outline: none;
+	opacity: 1;
+}

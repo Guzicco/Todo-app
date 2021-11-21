@@ -10,8 +10,9 @@ function App() {
 
 	const [taskList, setTaskList] = useState(initialState);
 	const [toDoInput, setToDoInput] = useState("");
+	const [displayFinished, setDisplayFinished] = useState(false);
 
-	const handleToggle = (id) => {
+	const handleToggleTask = (id) => {
 		const updatedToDoList = taskList.map((item) => {
 			if (item.id === id) {
 				return { ...item, isDone: !item.isDone };
@@ -34,9 +35,10 @@ function App() {
 		};
 		setTaskList([...taskList, newItem]);
 		setToDoInput("");
+		setDisplayFinished(false);
 	};
 
-	const handleRemove = (id) => {
+	const handleRemoveTask = (id) => {
 		const updatedToDoList = taskList.filter((item) => {
 			return item.id !== id;
 		});
@@ -53,7 +55,7 @@ function App() {
 	return (
 		<div className="App">
 			<div className="flex-container">
-				<div className="flex-item">
+				<div className="flex-item" id="todo-header">
 					<h1>Todo</h1>
 					<form onSubmit={handleSubmit}>
 						<label>
@@ -70,43 +72,64 @@ function App() {
 						<button type="submit">Add Task</button>
 					</form>
 				</div>
-				<div className="flex-item">
-					<h1>UnFinished</h1>
-					{unfinishedToDo.length ? (
-						<ol>
-							{unfinishedToDo.map((item) => (
-								<Task
-									key={item.id}
-									id={item.id}
-									taskInfo={item.taskInfo}
-									onToggle={handleToggle}
-									onRemove={handleRemove}
-									isDone={item.isDone}
-								/>
-							))}
-						</ol>
-					) : (
-						<p> No Tasks</p>
-					)}
-					<h1>Finished</h1>
-					{finishedToDo.length ? (
-						<ol>
-							{finishedToDo.map((item) => {
-								return (
+				<div className="flex-item" id="todo-viewer">
+					<div className="list-switcher">
+						<button
+							className={displayFinished ? "" : "active-button"}
+							onClick={() => {
+								setDisplayFinished(false);
+							}}
+						>
+							UnFinished
+						</button>
+						<button
+							className={displayFinished ? "active-button" : ""}
+							onClick={() => {
+								setDisplayFinished(true);
+							}}
+						>
+							Finished
+						</button>
+					</div>
+
+					{!displayFinished ? (
+						unfinishedToDo.length ? (
+							<ol className="list-viewer">
+								{unfinishedToDo.map((item) => (
 									<Task
 										key={item.id}
 										id={item.id}
 										taskInfo={item.taskInfo}
-										onToggle={handleToggle}
-										onRemove={handleRemove}
+										onToggle={handleToggleTask}
+										onRemove={handleRemoveTask}
 										isDone={item.isDone}
 									/>
-								);
-							})}
-						</ol>
-					) : (
-						<p>No Tasks</p>
-					)}
+								))}
+							</ol>
+						) : (
+							<p>No Task</p>
+						)
+					) : null}
+					{displayFinished ? (
+						finishedToDo.length ? (
+							<ol className="list-viewer">
+								{finishedToDo.map((item) => {
+									return (
+										<Task
+											key={item.id}
+											id={item.id}
+											taskInfo={item.taskInfo}
+											onToggle={handleToggleTask}
+											onRemove={handleRemoveTask}
+											isDone={item.isDone}
+										/>
+									);
+								})}
+							</ol>
+						) : (
+							<p>No Task</p>
+						)
+					) : null}
 				</div>
 			</div>
 		</div>
