@@ -6,8 +6,8 @@ import TaskForm from "./TaskForm";
 const TODO_LIST_STORAGE_KEY = "TODO_LIST_STORAGE_KEY";
 
 const DISPLAYED_LISTS = {
-	FINISHED: "FINISHED",
 	UNFINISHED: "UNFINISHED",
+	FINISHED: "FINISHED",
 	ALL: "ALL",
 };
 
@@ -16,9 +16,6 @@ function App() {
 		JSON.parse(localStorage.getItem(TODO_LIST_STORAGE_KEY)) || [];
 
 	const [taskList, setTaskList] = useState(initialState);
-
-	// DO ZOSTAPIENIA DISPLAYED LIST
-	const [displayFinished, setDisplayFinished] = useState(false);
 	const [displayedList, setDisplayedList] = useState(
 		DISPLAYED_LISTS.UNFINISHED
 	);
@@ -34,24 +31,24 @@ function App() {
 			isDone: false,
 		};
 		setTaskList([...taskList, newItem]);
-		setDisplayFinished(false);
+		setDisplayedList(DISPLAYED_LISTS.UNFINISHED);
 	};
 
 	const handleToggleTask = (id) => {
-		const updatedToDoList = taskList.map((item) => {
+		const updatedTaskList = taskList.map((item) => {
 			if (item.id === id) {
 				return { ...item, isDone: !item.isDone };
 			}
 			return item;
 		});
-		setTaskList(updatedToDoList);
+		setTaskList(updatedTaskList);
 	};
 
 	const handleRemoveTask = (id) => {
-		const updatedToDoList = taskList.filter((item) => {
+		const updatedTaskList = taskList.filter((item) => {
 			return item.id !== id;
 		});
-		setTaskList(updatedToDoList);
+		setTaskList(updatedTaskList);
 	};
 
 	useEffect(() => {
@@ -70,31 +67,23 @@ function App() {
 				</div>
 				<div className="flex-item" id="todo-viewer">
 					<div className="list-switcher">
-						{/* {Object.keys(DISPLAYED_LISTS).map((sth) => {
-							console.log(sth);
-						})} */}
-						<button
-							className={displayFinished ? "" : "active-button"}
-							onClick={() => {
-								setDisplayFinished(false);
-							}}
-						>
-							UnFinished
-						</button>
-						<button
-							className={displayFinished ? "active-button" : ""}
-							onClick={() => {
-								setDisplayFinished(true);
-							}}
-						>
-							Finished
-						</button>
+						{Object.keys(DISPLAYED_LISTS).map((key) => {
+							return (
+								<button
+									className={displayedList === key ? "active-button" : ""}
+									onClick={() => {
+										setDisplayedList(key);
+									}}
+								>
+									{key}
+								</button>
+							);
+						})}
 					</div>
-
-					{!displayFinished ? (
-						unfinishedTask.length ? (
+					{displayedList === DISPLAYED_LISTS.FINISHED ? (
+						finishedTask.length ? (
 							<ol className="list-viewer">
-								{unfinishedTask.map((item) => (
+								{finishedTask.map((item) => (
 									<Task
 										key={item.id}
 										id={item.id}
@@ -106,13 +95,13 @@ function App() {
 								))}
 							</ol>
 						) : (
-							<p>No Task</p>
+							<p>Congrat's! Your job is done!</p>
 						)
 					) : null}
-					{displayFinished ? (
-						finishedTask.length ? (
+					{displayedList === DISPLAYED_LISTS.UNFINISHED ? (
+						unfinishedTask.length ? (
 							<ol className="list-viewer">
-								{finishedTask.map((item) => {
+								{unfinishedTask.map((item) => {
 									return (
 										<Task
 											key={item.id}
@@ -126,7 +115,27 @@ function App() {
 								})}
 							</ol>
 						) : (
-							<p>No Task</p>
+							<p>There's no way You don't have any work to do...</p>
+						)
+					) : null}
+					{displayedList === DISPLAYED_LISTS.ALL ? (
+						taskList.length ? (
+							<ol className="list-viewer">
+								{taskList.map((item) => {
+									return (
+										<Task
+											key={item.id}
+											id={item.id}
+											taskInfo={item.taskInfo}
+											onToggle={handleToggleTask}
+											onRemove={handleRemoveTask}
+											isDone={item.isDone}
+										/>
+									);
+								})}
+							</ol>
+						) : (
+							<p>Your workflow is empty</p>
 						)
 					) : null}
 				</div>
