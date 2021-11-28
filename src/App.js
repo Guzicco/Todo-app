@@ -1,16 +1,41 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import Task from "./Task";
+import TaskForm from "./TaskForm";
 
 const TODO_LIST_STORAGE_KEY = "TODO_LIST_STORAGE_KEY";
+
+const DISPLAYED_LISTS = {
+	FINISHED: "FINISHED",
+	UNFINISHED: "UNFINISHED",
+	ALL: "ALL",
+};
 
 function App() {
 	const initialState =
 		JSON.parse(localStorage.getItem(TODO_LIST_STORAGE_KEY)) || [];
 
 	const [taskList, setTaskList] = useState(initialState);
-	const [toDoInput, setToDoInput] = useState("");
+
+	// DO ZOSTAPIENIA DISPLAYED LIST
 	const [displayFinished, setDisplayFinished] = useState(false);
+	const [displayedList, setDisplayedList] = useState(
+		DISPLAYED_LISTS.UNFINISHED
+	);
+
+	const addNewTask = (taskValue) => {
+		const taskName = taskValue;
+		if (!taskName) {
+			return;
+		}
+		const newItem = {
+			id: new Date(),
+			taskInfo: taskName,
+			isDone: false,
+		};
+		setTaskList([...taskList, newItem]);
+		setDisplayFinished(false);
+	};
 
 	const handleToggleTask = (id) => {
 		const updatedToDoList = taskList.map((item) => {
@@ -20,22 +45,6 @@ function App() {
 			return item;
 		});
 		setTaskList(updatedToDoList);
-	};
-
-	const handleSubmit = (event) => {
-		event.preventDefault();
-		const taskname = event.target.taskInput.value;
-		if (!taskname) {
-			return;
-		}
-		const newItem = {
-			id: new Date(),
-			taskInfo: taskname,
-			isDone: false,
-		};
-		setTaskList([...taskList, newItem]);
-		setToDoInput("");
-		setDisplayFinished(false);
 	};
 
 	const handleRemoveTask = (id) => {
@@ -49,31 +58,21 @@ function App() {
 		localStorage.setItem(TODO_LIST_STORAGE_KEY, JSON.stringify(taskList));
 	}, [taskList]);
 
-	const unfinishedToDo = taskList.filter((item) => !item.isDone);
-	const finishedToDo = taskList.filter((item) => item.isDone);
+	const unfinishedTask = taskList.filter((item) => !item.isDone);
+	const finishedTask = taskList.filter((item) => item.isDone);
 
 	return (
 		<div className="App">
 			<div className="flex-container">
 				<div className="flex-item" id="todo-header">
 					<h1>Todo</h1>
-					<form onSubmit={handleSubmit}>
-						<label>
-							<input
-								name="taskInput"
-								type="text"
-								placeholder="add your task"
-								value={toDoInput}
-								onChange={(event) => {
-									setToDoInput(event.target.value);
-								}}
-							></input>
-						</label>
-						<button type="submit">Add Task</button>
-					</form>
+					<TaskForm onSubmit={addNewTask} />
 				</div>
 				<div className="flex-item" id="todo-viewer">
 					<div className="list-switcher">
+						{/* {Object.keys(DISPLAYED_LISTS).map((sth) => {
+							console.log(sth);
+						})} */}
 						<button
 							className={displayFinished ? "" : "active-button"}
 							onClick={() => {
@@ -93,9 +92,9 @@ function App() {
 					</div>
 
 					{!displayFinished ? (
-						unfinishedToDo.length ? (
+						unfinishedTask.length ? (
 							<ol className="list-viewer">
-								{unfinishedToDo.map((item) => (
+								{unfinishedTask.map((item) => (
 									<Task
 										key={item.id}
 										id={item.id}
@@ -111,9 +110,9 @@ function App() {
 						)
 					) : null}
 					{displayFinished ? (
-						finishedToDo.length ? (
+						finishedTask.length ? (
 							<ol className="list-viewer">
-								{finishedToDo.map((item) => {
+								{finishedTask.map((item) => {
 									return (
 										<Task
 											key={item.id}

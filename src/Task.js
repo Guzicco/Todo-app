@@ -2,7 +2,7 @@ import React from "react";
 
 const Task = ({ id, taskInfo, onToggle, isDone, onRemove }) => {
 	return (
-		<li key={id}>
+		<li>
 			{taskInfo}
 			<input
 				type="checkbox"
